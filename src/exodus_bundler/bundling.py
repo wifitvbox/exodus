@@ -121,7 +121,7 @@ def create_unpackaged_bundle(executables, rename=[], chroot=None, add=[], no_sym
                 dependency_paths = detect_dependencies(file.path)
                 if not dependency_paths:
                     raise DependencyDetectionError(
-                        ('Automatic dependency detection failed. Either "%s" ' % file.path) +
+                        ('Automatic dependency detection failed. Either "%s" ' % file.path)
                         'is not tracked by your package manager, or your operating system '
                         'is not currently compatible with the `--detect` option. If not, please '
                         'create an issue at https://github.com/intoli/exodus and we\'ll try our '
@@ -169,12 +169,12 @@ def parse_dependencies_from_ldd_output(content):
     dependencies = []
     for line in content:
         # This first one is a special case of invoking the linker as `ldd`.
-        if re.search('^\s*(/.*?)\s*=>\s*ldd\s*\(', line):
+        if re.search(r'^\s*(/.*?)\s*=>\s*ldd\s*\(', line):
             # We'll exclude this because it's the hardcoded INTERP path, and it would be
             # impossible to get the full path from this command output.
             continue
-        match = re.search('=>\s*(/.*?)\s*\(', line)
-        match = match or re.search('\s*(/.*?)\s*\(', line)
+        match = re.search(r'=>\s*(/.*?)\s*\(', line)
+        match = match or re.search(r'\s*(/.*?)\s*\(', line)
         if match:
             dependencies.append(match.group(1))
 
@@ -271,7 +271,7 @@ class Elf(object):
             self.bits = {b'\x01': 32, b'\x02': 64}.get(format_byte)
             if not self.bits:
                 raise UnsupportedArchitectureError(
-                    ('The "%s" file does not appear to be either 32 or 64 bits. ' % path) +
+                    ('The "%s" file does not appear to be either 32 or 64 bits. ' % path)
                     'Other architectures are not currently supported, but you can open an '
                     'issue at https://github.com/intoli/exodus stating your use-case and '
                     'support might get extended in the future.',
@@ -283,7 +283,7 @@ class Elf(object):
             assert byteorder == 'little', 'Big endian is not supported right now.'
             if not byteorder:
                 raise UnsupportedArchitectureError(
-                    ('The "%s" file does not appear to be little endian, ' % path) +
+                    ('The "%s" file does not appear to be little endian, ' % path)
                     'and big endian binaries are not currently supported. You can open an '
                     'issue at https://github.com/intoli/exodus stating your use-case and '
                     'support might get extended in the future.',
@@ -673,7 +673,7 @@ class File(object):
             return False
 
         # Most libraries will include `.so` in the filename.
-        return re.search('\.so(?:\.|$)', self.path)
+        return re.search(r'\.so(?:\.|$)', self.path)
 
     @stored_property
     def source(self):
